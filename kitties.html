@@ -71,7 +71,11 @@
 
       let i = 0
 
-      const load = () => {
+      const load = (e) => {
+        if (e && e.type === 'error') {
+          grid.removeChild(e.target.parentNode)
+        }
+
         masonry.layout()
         const src = sources[i++]
         if (!src) return
