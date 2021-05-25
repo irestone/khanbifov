@@ -1,7 +1,38 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import { FC } from 'react'
+import { AppProps } from 'next/app'
+import { Global } from '@emotion/react'
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+const App: FC<AppProps> = ({ Component, pageProps }) => {
+  return (
+    <>
+      <Global
+        styles={{
+          'html, body': {
+            padding: 0,
+            margin: 0,
+            fontFamily: 'Segoe UI, sans-serif',
+            lineHeight: 1.6,
+            fontSize: '16px',
+          },
+          '*, *:before, *:after': {
+            boxSizing: 'border-box',
+          },
+          a: {
+            color: '#0070f3',
+            textDecoration: 'none',
+            '&:hover': {
+              textDecoration: 'underline',
+            },
+          },
+          img: {
+            maxWidth: '100%',
+            display: 'block',
+          },
+        }}
+      />
+      <Component {...pageProps} />
+    </>
+  )
 }
-export default MyApp
+
+export default App
