@@ -28,6 +28,9 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
             maxWidth: '100%',
             display: 'block',
           },
+          body: {
+            background: '#f3f2f1',
+          },
         }}
       />
       <Component {...pageProps} />
