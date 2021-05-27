@@ -4,6 +4,7 @@ import { GetStaticProps, InferGetServerSidePropsType } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
 import { FC } from 'react'
+import { useTranslations } from 'use-intl'
 
 import Layout from '../components/layout'
 import { getPosts, TPostData } from '../lib/api'
@@ -11,10 +12,11 @@ import { getPostLink } from '../lib/utils'
 
 const getStaticProps: GetStaticProps<{ posts: TPostData[] }> = async ({ locale }) => {
   const posts = await getPosts({ locale })
-  return { props: { posts } }
+  return { props: { posts, messages: require(`../locales/${locale}.json`) } }
 }
 
 const Home: FC<InferGetServerSidePropsType<typeof getStaticProps>> = ({ posts }) => {
+  const t = useTranslations()
   return (
     <>
       <Head>
@@ -23,9 +25,9 @@ const Home: FC<InferGetServerSidePropsType<typeof getStaticProps>> = ({ posts })
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <Layout>
-        <h3>FEATURED</h3>
+        <h3>{t('featured')}</h3>
         <div css={{ width: '100%', height: '30rem', background: '#ccc' }}></div>
-        <h3>LATEST</h3>
+        <h3>{t('latest')}</h3>
         {posts.map((post) => {
           const { id, poster, title, category, tags, created_at } = post
           return (

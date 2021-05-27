@@ -3,6 +3,7 @@
 import { FC } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/dist/client/router'
+import { useTranslations } from 'use-intl'
 
 // todo: orientations
 const mq = (i: number) => `@media (min-width: ${i * 100}px)`
@@ -12,6 +13,7 @@ const red = '#cf2525'
 
 const Layout: FC = ({ children }) => {
   const { locale } = useRouter()
+  const t = useTranslations()
   return (
     <>
       <div
@@ -35,9 +37,7 @@ const Layout: FC = ({ children }) => {
             padding: '0 1rem',
             margin: '0 auto',
             [mq(9)]: { width: '55rem' },
-            a: {
-              color: 'white',
-            },
+            a: { color: 'white' },
           }}
         >
           <Link href='/'>
@@ -63,10 +63,10 @@ const Layout: FC = ({ children }) => {
               '> *': { marginLeft: '1rem' },
             }}
           >
-            <Link href='/about'>about</Link>
-            <Link href='/works'>works</Link>
-            <Link href='/experiments'>experiments</Link>
-            <Link href='/blog'>blog</Link>
+            <Link href='/about'>{t('about')}</Link>
+            <Link href='/works'>{t('works')}</Link>
+            <Link href='/experiments'>{t('experiments')}</Link>
+            <Link href='/blog'>{t('blog')}</Link>
           </nav>
         </div>
       </div>

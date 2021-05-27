@@ -1,6 +1,7 @@
 import { FC } from 'react'
 import { AppProps } from 'next/app'
 import { Global } from '@emotion/react'
+import { NextIntlProvider } from 'next-intl'
 
 // todo: style reset file
 
@@ -48,7 +49,9 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
           },
         }}
       />
-      <Component {...pageProps} />
+      <NextIntlProvider messages={pageProps.messages}>
+        <Component {...pageProps} />
+      </NextIntlProvider>
     </>
   )
 }

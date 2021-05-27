@@ -10,7 +10,7 @@ import Layout from '../components/layout'
 
 const getStaticProps: GetStaticProps<TAboutPageData> = async ({ locale }) => {
   const props = await getAboutPage({ locale })
-  return { props }
+  return { props: { ...props, messages: require(`../locales/${locale}.json`) } }
 }
 
 const About: FC<InferGetServerSidePropsType<typeof getStaticProps>> = ({ title, body, photo }) => {

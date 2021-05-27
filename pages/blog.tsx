@@ -10,7 +10,7 @@ import Category from '../components/category'
 
 const getStaticProps: GetStaticProps<{ posts: TPostData[] }> = async ({ locale }) => {
   const posts = await getPosts({ locale, where: { category: 'blog' } })
-  return { props: { posts } }
+  return { props: { posts, messages: require(`../locales/${locale}.json`) } }
 }
 
 const Blog: FC<InferGetServerSidePropsType<typeof getStaticProps>> = ({ posts }) => {

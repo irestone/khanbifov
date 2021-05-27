@@ -18,7 +18,7 @@ const getStaticProps: GetStaticProps<{ post: TPostData }> = async ({ locale, par
   if (!params?.slug) throw new Error('No params')
   const posts = await getPosts({ locale, where: { slug: params.slug } })
   if (!posts[0]) throw new Error('Could not find the post')
-  return { props: { post: posts[0] } }
+  return { props: { post: posts[0], messages: require(`../../locales/${locale}.json`) } }
 }
 
 const Work: FC<InferGetServerSidePropsType<typeof getStaticProps>> = ({ post }) => {

@@ -23,6 +23,7 @@ import {
 
 import { TPostCategory, TPostData } from '../lib/api'
 import { getPostLink, getCategoryLink, categoryNamesMapping } from '../lib/utils'
+import { useTranslations } from 'use-intl'
 
 const POSTS_COUNT_PER_PAGE = 3
 
@@ -34,6 +35,7 @@ const black = '#222'
 const white = '#f1f1f1'
 
 const Category: FC<{ name: TPostCategory; posts: TPostData[] }> = ({ name, posts }) => {
+  const t = useTranslations()
   const router = useRouter()
 
   const tags = useMemo(() => {
@@ -197,7 +199,7 @@ const Category: FC<{ name: TPostCategory; posts: TPostData[] }> = ({ name, posts
   return (
     <>
       <div css={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1 css={{ margin: 0, textTransform: 'uppercase' }}>{categoryNamesMapping[name]}</h1>
+        <h1 css={{ margin: 0, textTransform: 'uppercase' }}>{t(categoryNamesMapping[name])}</h1>
         {tagsFilter}
       </div>
       <div css={{ marginTop: '3rem' }}>
