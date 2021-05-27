@@ -2,6 +2,8 @@ import { FC } from 'react'
 import { AppProps } from 'next/app'
 import { Global } from '@emotion/react'
 
+// todo: style reset file
+
 const App: FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <>
@@ -27,6 +29,19 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
           img: {
             maxWidth: '100%',
             display: 'block',
+          },
+          button: {
+            fontSize: 'inherit',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: 'auto',
+            height: '1.6em',
+            lineHeight: '1.6em',
+            padding: '0 0.5em',
+            border: 0,
+            background: '#eaeaea',
+            cursor: 'pointer',
           },
           body: {
             background: '#f3f2f1',

@@ -57,14 +57,10 @@ const Home: FC<InferGetServerSidePropsType<typeof getStaticProps>> = ({ posts })
             </div>
           )
         })}
-        <h4>{`<pagination>`}</h4>
       </Layout>
     </>
   )
 }
-
-// todo: i18n
-// todo: click on tag opens a current page w/ the tag param (e.g. .../works?tag=react)
 
 export { getStaticProps }
 export default Home

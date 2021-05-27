@@ -1,3 +1,5 @@
+import qs from 'qs'
+
 import { TPostData, TPostCategory } from './api'
 
 const categoryNamesMapping: { [category in TPostCategory]: string } = {
@@ -6,9 +8,16 @@ const categoryNamesMapping: { [category in TPostCategory]: string } = {
   blog: 'blog',
 }
 
-// todo: research on how to form links better
+// todo: research on better upproach to constract links
+
 const getPostLink = ({ category, slug }: TPostData) => {
   return `/${categoryNamesMapping[category]}/${slug}`
 }
 
-export { getPostLink, categoryNamesMapping }
+const getCategoryLink = (category: TPostCategory, query: any) => {
+  const url = `/${categoryNamesMapping[category]}`
+  const queryString = qs.stringify(query, { arrayFormat: 'repeat' })
+  return queryString ? `${url}?${queryString}` : url
+}
+
+export { getPostLink, getCategoryLink, categoryNamesMapping }
