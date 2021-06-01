@@ -1,7 +1,5 @@
 import Axios from 'axios'
 
-// const url = `${process.env.STRAPI_API_URL}/graphql`
-
 interface TGQLResponse<T = any> {
   data?: T
   error?: any
@@ -20,7 +18,6 @@ type TAboutPageData = {
   photo: {
     url: string
   }
-  title: string
   body: string
 }
 
@@ -31,7 +28,6 @@ const getAboutPage = async (params: TGetAboutPageParams) => {
         photo {
           url
         }
-        title
         body
       }
     }
@@ -39,6 +35,34 @@ const getAboutPage = async (params: TGetAboutPageParams) => {
   const res = await request<{ about: TAboutPageData }>(query, params)
   if (res.data.error || !res.data.data) throw new Error('Error fetching "About" page')
   return res.data.data.about
+}
+
+// section #####################################################################
+//  INFO
+// #############################################################################
+
+type TGetInfoParams = { locale?: string }
+type TInfoData = {
+  email: string
+  twitter: string
+  github: string
+  linkedin: string
+}
+
+const getInfo = async (params: TGetInfoParams) => {
+  const query = `
+    query Info {
+      info {
+        email
+        twitter
+        github
+        linkedin
+      }
+    }
+  `
+  const res = await request<{ info: TInfoData }>(query, params)
+  if (res.data.error || !res.data.data) throw new Error('Error fetching Info')
+  return res.data.data.info
 }
 
 // section #####################################################################
@@ -51,12 +75,14 @@ type TPostData = {
   id: string
   created_at: string
   poster: { url: string }
+  thumb: { url: string }
   title: string
   slug: string
   body: string
+  excerpt: string
   category: TPostCategory
-  tags: string[]
   locale: string
+  featured: boolean
 }
 
 type TGetPostsParams = { locale?: string; where?: { [key: string]: any } }
@@ -65,16 +91,20 @@ const getPosts = async (params: TGetPostsParams) => {
     query Posts($locale: String, $where: JSON) {
       posts(locale: $locale, where: $where) {
         id
-        created_at
         poster {
           url
         }
+        thumb {
+          url
+        }
         title
-        body
-        category
         slug
-        tags
+        body
+        excerpt
+        category
+        featured
         locale
+        created_at
       }
     }
   `
@@ -83,5 +113,5 @@ const getPosts = async (params: TGetPostsParams) => {
   return res.data.data.posts
 }
 
-export type { TPostCategory, TPostData, TAboutPageData }
-export { getPosts, getAboutPage }
+export type { TInfoData, TPostCategory, TPostData, TAboutPageData }
+export { getInfo, getPosts, getAboutPage }

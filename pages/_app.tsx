@@ -1,58 +1,21 @@
 import { FC } from 'react'
 import { AppProps } from 'next/app'
-import { Global } from '@emotion/react'
+import { Global as GlobalStyles, ThemeProvider } from '@emotion/react'
 import { NextIntlProvider } from 'next-intl'
 
-// todo: style reset file
+import theme from '../styles/theme'
+import reset from '../styles/reset'
+import global from '../styles/global'
+import imports from '../styles/imports'
 
 const App: FC<AppProps> = ({ Component, pageProps }) => {
   return (
-    <>
-      <Global
-        styles={{
-          'html, body': {
-            padding: 0,
-            margin: 0,
-            fontFamily: 'Segoe UI, sans-serif',
-            lineHeight: 1.6,
-            fontSize: '16px',
-          },
-          '*, *:before, *:after': {
-            boxSizing: 'border-box',
-          },
-          a: {
-            color: '#0070f3',
-            textDecoration: 'none',
-            '&:hover': {
-              textDecoration: 'underline',
-            },
-          },
-          img: {
-            maxWidth: '100%',
-            display: 'block',
-          },
-          button: {
-            fontSize: 'inherit',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: 'auto',
-            height: '1.6em',
-            lineHeight: '1.6em',
-            padding: '0 0.5em',
-            border: 0,
-            background: '#eaeaea',
-            cursor: 'pointer',
-          },
-          body: {
-            background: '#f3f2f1',
-          },
-        }}
-      />
-      <NextIntlProvider messages={pageProps.messages}>
+    <NextIntlProvider messages={pageProps.messages}>
+      <ThemeProvider theme={theme}>
         <Component {...pageProps} />
-      </NextIntlProvider>
-    </>
+        <GlobalStyles styles={[imports, reset, global]} />
+      </ThemeProvider>
+    </NextIntlProvider>
   )
 }
 
