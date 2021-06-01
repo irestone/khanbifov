@@ -3,6 +3,7 @@
 import { GetStaticPaths, GetStaticProps, InferGetServerSidePropsType } from 'next'
 import Head from 'next/head'
 import { FC } from 'react'
+import { useRouter } from 'next/dist/client/router'
 
 import { getInfo, getPosts, TInfoData, TPostData } from '../../lib/api'
 import Layout from '../../components/layout'
@@ -23,10 +24,12 @@ const getStaticProps: GetStaticProps<{ post: TPostData; info: TInfoData }> = asy
   if (!post) throw new Error('Could not find the post')
   const info = await getInfo({ locale })
   const messages = require(`../../locales/${locale}.json`)
-  return { props: { post, info, messages } }
+  return { props: { post, info, messages }, revalidate: 1 }
 }
 
 const Experiment: FC<InferGetServerSidePropsType<typeof getStaticProps>> = ({ post, info }) => {
+  const router = useRouter()
+  if (router.isFallback) return null
   return (
     <>
       <Head>
