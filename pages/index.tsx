@@ -200,7 +200,7 @@ const Home: FC<InferGetServerSidePropsType<typeof getStaticProps>> = ({ posts, i
           }}
         >
           <HeroPost post={hero} />
-          <SectionTitle css={{ color: '#314046' }}>{t('featured')}</SectionTitle>
+          <SectionTitle css={{ color: '#635e5a' }}>{t('featured')}</SectionTitle>
           <div css={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem 3.3rem' }}>
             {featured.map((post) => {
               return <FeaturedPost key={post.id} post={post} />
