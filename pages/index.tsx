@@ -177,7 +177,7 @@ const Home: FC<InferGetServerSidePropsType<typeof getStaticProps>> = ({ posts, i
   const t = useTranslations()
 
   const { hero, featured, latest } = useMemo(() => {
-    const sorted = sortBy(posts, 'created_at')
+    const sorted = sortBy(posts, 'created_at').reverse()
     const allFeatured = filter(sorted, 'featured')
     const hero = allFeatured[0]
     const featured = allFeatured.slice(1, 5)
