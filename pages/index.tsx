@@ -45,7 +45,7 @@ const PostTitle = s.a({
 })
 
 const PostImage = s.div({
-  background: '#e6d95a',
+  background: theme.colors.yellow1,
   cursor: 'pointer',
   '> *': { display: 'block !important', transition: 'all .1s' },
   ':hover > *, &.--hovered > *': { transform: 'translate(0.3em, -0.3em)' },
