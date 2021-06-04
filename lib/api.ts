@@ -5,8 +5,22 @@ interface TGQLResponse<T = any> {
   error?: any
 }
 
-const request = <T = any>(query: string, variables: { [name: string]: any }) => {
+const get = <T = any>(query: string, variables: { [name: string]: any }) => {
   return Axios.post<TGQLResponse<T>>(`${process.env.STRAPI_API_URL}/graphql`, { query, variables })
+}
+
+const queries = {
+  info: `
+    query Info {
+      info {
+        location
+        email
+        twitter
+        github
+        linkedin
+      }
+    }
+  `,
 }
 
 // section #####################################################################
@@ -32,7 +46,7 @@ const getAboutPage = async (params: TGetAboutPageParams) => {
       }
     }
   `
-  const res = await request<{ about: TAboutPageData }>(query, params)
+  const res = await get<{ about: TAboutPageData }>(query, params)
   if (res.data.error || !res.data.data) throw new Error('Error fetching "About" page')
   return res.data.data.about
 }
@@ -41,28 +55,23 @@ const getAboutPage = async (params: TGetAboutPageParams) => {
 //  INFO
 // #############################################################################
 
-type TGetInfoParams = { locale?: string }
 type TInfoData = {
+  location: string
   email: string
   twitter: string
   github: string
   linkedin: string
 }
 
+type TGetInfoParams = { locale?: string }
+
 const getInfo = async (params: TGetInfoParams) => {
-  const query = `
-    query Info {
-      info {
-        email
-        twitter
-        github
-        linkedin
-      }
-    }
-  `
-  const res = await request<{ info: TInfoData }>(query, params)
-  if (res.data.error || !res.data.data) throw new Error('Error fetching Info')
-  return res.data.data.info
+  const { data } = await get<{ info: TInfoData }>(queries.info, params)
+  if (data.error || !data.data) {
+    console.error(data.error)
+    throw new Error('Could not fetch info')
+  }
+  return data.data.info
 }
 
 // section #####################################################################
@@ -108,7 +117,7 @@ const getPosts = async (params: TGetPostsParams) => {
       }
     }
   `
-  const res = await request<{ posts: TPostData[] }>(query, params)
+  const res = await get<{ posts: TPostData[] }>(query, params)
   if (res.data.error || !res.data.data) throw new Error('Error fetching posts')
   return res.data.data.posts
 }
