@@ -20,6 +20,8 @@ const reset = css({
     cursor: 'pointer',
   },
   img: { maxWidth: '100%', display: 'block' },
+  'ul, ol, li': { margin: 0, padding: 0, listStyle: 'none' },
+  blockquote: { margin: 0 },
 })
 
 export default reset
