@@ -17,7 +17,7 @@ const getStaticProps: GetStaticProps<{ about: TAboutPageData; info: TInfoData }>
   const about = await getAboutPage({ locale })
   const info = await getInfo({ locale })
   const messages = require(`../locales/${locale}.json`)
-  return { props: { about, info, messages } }
+  return { props: { about, info, messages }, revalidate: 1 }
 }
 
 const About: FC<InferGetServerSidePropsType<typeof getStaticProps>> = ({ about, info }) => {
