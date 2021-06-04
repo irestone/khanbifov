@@ -11,8 +11,8 @@ const get = <T = any>(query: string, variables: { [name: string]: any }) => {
 
 const queries = {
   info: `
-    query Info {
-      info {
+    query Info($locale: String) {
+      info(locale: $locale) {
         location
         email
         twitter
