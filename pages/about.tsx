@@ -38,7 +38,7 @@ const About: FC<InferGetServerSidePropsType<typeof getStaticProps>> = ({ about, 
             '::after': { content: '""', display: 'table', clear: 'both' },
           }}
         >
-          <div>
+          <div css={{ marginTop: '1.4rem' }}>
             <div
               css={{
                 width: '100%',
