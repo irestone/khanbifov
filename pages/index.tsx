@@ -14,6 +14,8 @@ import theme from '../styles/theme'
 import Layout from '../components/layout'
 import { getInfo, getPosts, TPostData, TInfoData } from '../lib/api'
 import { getPostLink } from '../lib/utils'
+import Icon from '../components/Icon'
+import FormattedDate from '../components/formattedDate'
 
 const getStaticProps: GetStaticProps<{ posts: TPostData[]; info: TInfoData }> = async ({
   locale,
@@ -49,12 +51,6 @@ const PostImage = s.div({
   cursor: 'pointer',
   '> *': { display: 'block !important', transition: 'all .1s' },
   ':hover > *, &.--hovered > *': { transform: 'translate(0.3em, -0.3em)' },
-})
-
-const Date = s.span({
-  font: `1.1rem ${theme.fonts.openSans}`,
-  color: theme.colors.gray,
-  letterSpacing: '.04em',
 })
 
 const HeroPost: FC<{ post: TPostData }> = ({ post }) => {
@@ -167,7 +163,21 @@ const LatestPost: FC<{ post: TPostData }> = ({ post }) => {
             {truncate(post.title, { length: 85 })}
           </PostTitle>
         </Link>
-        <Date css={{ marginTop: '.8rem' }}>{post.created_at}</Date>
+        <div css={{ marginTop: '.8rem', display: 'flex', alignItems: 'center' }}>
+          <Icon
+            calendar
+            css={{
+              with: '1.1rem',
+              height: '1.1rem',
+              fill: theme.colors.gray,
+              marginRight: '.7rem',
+            }}
+          />
+          <FormattedDate
+            date={post.created_at}
+            css={{ fontSize: '1.1rem', color: theme.colors.gray }}
+          />
+        </div>
       </div>
     </div>
   )

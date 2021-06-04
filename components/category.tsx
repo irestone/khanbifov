@@ -5,10 +5,12 @@ import { FC, useMemo, useState } from 'react'
 import { sortBy } from 'lodash'
 import Image from 'next/image'
 import cn from 'classnames'
+import { useTheme } from '@emotion/react'
 
 import { TPostData } from '../lib/api'
 import { getPostLink } from '../lib/utils'
-import { useTheme } from '@emotion/react'
+import Icon from './Icon'
+import FormattedDate from './formattedDate'
 
 const Entry: FC<{ post: TPostData }> = ({ post }) => {
   const [isHovered, setIsHovered] = useState(false)
@@ -28,33 +30,60 @@ const Entry: FC<{ post: TPostData }> = ({ post }) => {
           css={{
             cursor: 'pointer',
             border: '1rem solid #4f5758',
-            ':hover, &.--hovered': { borderColor: theme.colors.yellow1 },
-            '> *': { display: 'block !important' },
+            ':hover, &.--hovered': { borderColor: '#ffcf76' },
+            '> *': { display: 'block !important', border: '1px solid #515f56' },
           }}
           {...onHover}
         >
           <Image src={post.poster.url} width={1280} height={720} alt={post.title} />
         </div>
       </Link>
+      <div css={{ marginTop: '1rem', display: 'flex', alignItems: 'center' }}>
+        <Icon
+          calendar
+          css={{ with: '1.3rem', height: '1.3rem', fill: '#839496', marginRight: '.7rem' }}
+        />
+        <FormattedDate date={post.created_at} css={{ fontSize: '1.2rem', color: '#939fa0' }} />
+      </div>
       <h2
-        className={cn({ '--hovered': isHovered })}
         css={{
           fontFamily: theme.fonts.exo2,
           fontSize: '2.3rem',
           lineHeight: 1.3,
           textTransform: 'uppercase',
           margin: '1rem 0 0',
-          cursor: 'pointer',
-          ':hover, &.--hovered': { textDecoration: 'underline', color: theme.colors.yellow1 },
         }}
-        {...onHover}
       >
-        <Link href={href}>{post.title}</Link>
+        <Link href={href}>
+          <a
+            className={cn({ '--hovered': isHovered })}
+            css={{
+              ':hover, &.--hovered': {
+                textDecoration: 'underline',
+                color: '#ffcf76',
+                cursor: 'pointer',
+              },
+            }}
+            {...onHover}
+          >
+            {post.title}
+          </a>
+        </Link>
       </h2>
-      <p css={{ fontSize: '1.4rem', margin: '1rem 0 0' }}>{post.excerpt}</p>
-      <small css={{ fontSize: '1.2rem', display: 'block', marginTop: '1rem', color: '#97a4a7' }}>
-        {post.created_at}
-      </small>
+      <div css={{ marginTop: '-0.4rem' }}>
+        <Icon
+          quote
+          css={{
+            with: '1.3rem',
+            height: '1.3rem',
+            fill: '#839496',
+            marginRight: '.7rem',
+            float: 'left',
+            marginTop: '.4rem',
+          }}
+        />
+        <p css={{ fontSize: '1.4rem', color: '#c4cccc' }}>{post.excerpt}</p>
+      </div>
     </div>
   )
 }
@@ -92,40 +121,3 @@ const Category: FC<{ title: string; posts: TPostData[] }> = ({ title, posts }) =
 }
 
 export default Category
-
-// const POSTS_COUNT_PER_PAGE = 100
-
-// const Category: FC<{ title: string; category: TPostCategory; posts: TPostData[] }> = ({
-//   title,
-//   category,
-//   posts,
-// }) => {
-//   const router = useRouter()
-
-//   const postsPerPage = useMemo(() => {
-//     return chunk(sortBy(posts, 'created_at').reverse(), POSTS_COUNT_PER_PAGE)
-//   }, [posts])
-
-//   const currentPage = useMemo(() => {
-//     const [queriedPage] = [router.query.page].flat()
-//     if (isUndefined(queriedPage)) return 1
-//     if (isNaN(+queriedPage) || !inRange(+queriedPage, 1, postsPerPage.length + 1)) {
-//       router.push(getCategoryLink(category, omit(router.query, 'page')))
-//       return 1
-//     }
-//     return +queriedPage
-//   }, [router.query, postsPerPage.length])
-
-//   const postsForCurrentPage = useMemo(() => {
-//     return postsPerPage[currentPage - 1] || []
-//   }, [postsPerPage, currentPage])
-
-//   return (
-//     <div>
-//       <h1 css={{ textTransform: 'uppercase' }}>{category}</h1>
-//       {postsForCurrentPage.map((post) => {
-//         return <Entry key={post.id} post={post} />
-//       })}
-//     </div>
-//   )
-// }
