@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import { CSSProperties, FC } from 'react'
-import { useTheme } from '@emotion/react'
+import { css, CSSObject, Interpolation, Theme, useTheme } from '@emotion/react'
 import ReactMarkdown from 'react-markdown'
 import gfm from 'remark-gfm'
 import { Prism } from 'react-syntax-highlighter'
@@ -147,7 +147,7 @@ const code: CodeComponent = ({ node, inline, className, children, ...props }) =>
   )
 }
 
-const Markdown: FC = ({ children }) => {
+const Markdown: FC<{ style?: CSSProperties }> = ({ children, style }) => {
   const theme = useTheme()
   return (
     <ReactMarkdown
@@ -172,10 +172,11 @@ const Markdown: FC = ({ children }) => {
         code,
       }}
       css={{
+        fontSize: '1.4rem',
+        fontFamily: theme.fonts.openSans,
         color: '#ececec',
         textShadow: '-.1em .1em #00000017',
-        fontFamily: theme.fonts.openSans,
-        fontSize: '1.4rem',
+        ...style,
       }}
     >
       {String(children)}

@@ -5,56 +5,24 @@ interface TGQLResponse<T = any> {
   error?: any
 }
 
-const get = <T = any>(query: string, variables: { [name: string]: any }) => {
-  return Axios.post<TGQLResponse<T>>(`${process.env.STRAPI_API_URL}/graphql`, { query, variables })
-}
+const apiURL = `${process.env.STRAPI_API_URL}/graphql`
 
-const queries = {
-  info: `
-    query Info($locale: String) {
-      info(locale: $locale) {
-        location
-        email
-        twitter
-        github
-        linkedin
-      }
-    }
-  `,
+const get = async <T = any>(query: string, variables: { [name: string]: any }) => {
+  const { data } = await Axios.post<TGQLResponse<T>>(apiURL, { query, variables })
+  if (data.error || !data.data) throw new Error('Error fetching data')
+  return data.data
 }
 
 // section #####################################################################
-//  "ABOUT" PAGE
+//  API
 // #############################################################################
 
-type TGetAboutPageParams = { locale?: string }
-type TAboutPageData = {
-  photo: {
-    url: string
-  }
-  body: string
-}
-
-const getAboutPage = async (params: TGetAboutPageParams) => {
-  const query = `
-    query About($locale: String) {
-      about(locale: $locale) {
-        photo {
-          url
-        }
-        body
-      }
-    }
-  `
-  const res = await get<{ about: TAboutPageData }>(query, params)
-  if (res.data.error || !res.data.data) throw new Error('Error fetching "About" page')
-  return res.data.data.about
-}
-
-// section #####################################################################
+// part ================================
 //  INFO
-// #############################################################################
+// =====================================
 
+type TGetInfoParams = { locale?: string }
+type TGetInfoResponse = { info: TInfoData }
 type TInfoData = {
   location: string
   email: string
@@ -63,23 +31,53 @@ type TInfoData = {
   linkedin: string
 }
 
-type TGetInfoParams = { locale?: string }
+const infoQuery = `
+  query Info($locale: String) {
+    info(locale: $locale) {
+      location
+      email
+      twitter
+      github
+      linkedin
+    }
+  }
+`
 
 const getInfo = async (params: TGetInfoParams) => {
-  const { data } = await get<{ info: TInfoData }>(queries.info, params)
-  if (data.error || !data.data) {
-    console.error(data.error)
-    throw new Error('Could not fetch info')
-  }
-  return data.data.info
+  const { info } = await get<TGetInfoResponse>(infoQuery, params)
+  return info
 }
 
-// section #####################################################################
+// part ================================
+//  ABOUT
+// =====================================
+
+type TGetAboutPageParams = { locale?: string }
+type TAboutPageResponse = { about: TAboutPageData }
+type TAboutPageData = { photo: { url: string }; body: string }
+
+const aboutPageQuery = `
+  query About($locale: String) {
+    about(locale: $locale) {
+      photo {
+        url
+      }
+      body
+    }
+  }
+`
+const getAboutPage = async (params: TGetAboutPageParams) => {
+  const { about } = await get<TAboutPageResponse>(aboutPageQuery, params)
+  return about
+}
+
+// part ================================
 //  POSTS
-// #############################################################################
+// =====================================
 
-type TPostCategory = 'work' | 'experiment' | 'blog'
-
+type TGetPostsParams = { locale?: string; where?: { [key: string]: any } }
+type TGetPostsResponse = { posts: TPostData }
+type TCategory = 'work' | 'experiment' | 'blog'
 type TPostData = {
   id: string
   created_at: string
@@ -89,14 +87,13 @@ type TPostData = {
   slug: string
   body: string
   excerpt: string
-  category: TPostCategory
+  category: TCategory
   locale: string
   featured: boolean
+  tags: string[]
 }
 
-type TGetPostsParams = { locale?: string; where?: { [key: string]: any } }
-const getPosts = async (params: TGetPostsParams) => {
-  const query = `
+const postsQuery = `
     query Posts($locale: String, $where: JSON) {
       posts(locale: $locale, where: $where) {
         id
@@ -114,13 +111,19 @@ const getPosts = async (params: TGetPostsParams) => {
         featured
         locale
         created_at
+        tags
       }
     }
   `
-  const res = await get<{ posts: TPostData[] }>(query, params)
-  if (res.data.error || !res.data.data) throw new Error('Error fetching posts')
-  return res.data.data.posts
+
+const getPosts = async (params: TGetPostsParams) => {
+  const { posts } = await get<TGetPostsResponse>(postsQuery, params)
+  return posts
 }
 
-export type { TInfoData, TPostCategory, TPostData, TAboutPageData }
+// section #####################################################################
+//  EXPORT
+// #############################################################################
+
+export type { TInfoData, TCategory, TPostData, TAboutPageData }
 export { getInfo, getPosts, getAboutPage }

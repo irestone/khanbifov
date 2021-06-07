@@ -5,7 +5,7 @@ const reset = css({
   html: { fontFamily: 'sans-serif', fontSize: 10, lineHeight: 1.6 },
   body: { padding: 0, margin: 0 },
   a: { color: 'inherit', textDecoration: 'none' },
-  'h1, h2, h3, h4, h5, h6': { margin: 0 },
+  'h1, h2, h3, h4, h5, h6, p': { margin: 0 },
   button: {
     fontSize: 'inherit',
     display: 'flex',

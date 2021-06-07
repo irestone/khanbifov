@@ -10,6 +10,7 @@ import location from '../public/icons/location.svg'
 import globe from '../public/icons/globe.svg'
 import calendar from '../public/icons/calendar.svg'
 import quote from '../public/icons/quote.svg'
+import hashtag from '../public/icons/hashtag.svg'
 
 type TIconName =
   | 'twitter'
@@ -20,6 +21,7 @@ type TIconName =
   | 'globe'
   | 'calendar'
   | 'quote'
+  | 'hashtag'
 
 const icons: { [name in TIconName]: FC<SVGProps<SVGSVGElement>> } = {
   twitter,
@@ -30,6 +32,7 @@ const icons: { [name in TIconName]: FC<SVGProps<SVGSVGElement>> } = {
   globe,
   calendar,
   quote,
+  hashtag,
 }
 
 const Icon: FC<{ [name in TIconName]?: boolean } & SVGProps<SVGSVGElement>> = ({
@@ -41,6 +44,7 @@ const Icon: FC<{ [name in TIconName]?: boolean } & SVGProps<SVGSVGElement>> = ({
   globe,
   calendar,
   quote,
+  hashtag,
   ...props
 }) => {
   const iconProps: { [name in TIconName]: boolean | undefined } = useMemo(
@@ -53,6 +57,7 @@ const Icon: FC<{ [name in TIconName]?: boolean } & SVGProps<SVGSVGElement>> = ({
       globe,
       calendar,
       quote,
+      hashtag,
     }),
     [location, email, twitter, github, linkedin, globe]
   )

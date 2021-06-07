@@ -5,42 +5,66 @@ import Image from 'next/image'
 import { FC } from 'react'
 
 import { TPostData } from '../lib/api'
-import FormattedDate from './formattedDate'
-import Icon from './Icon'
 import Markdown from './markdown'
+import MetaDate from './metaDate'
+import MetaTag from './metaTag'
 
 const Post: FC<{ post: TPostData }> = ({ post }) => {
   const theme = useTheme()
-  return (
-    <div>
-      <div css={{ borderBottom: '1px solid #515f56', '> *': { display: 'block !important' } }}>
-        <Image src={post.poster.url} alt={post.title} width={1280} height={720} />
-      </div>
-      <div css={{ padding: '5rem 13rem', borderTop: '1rem solid #4f5758' }}>
-        <div css={{ display: 'flex', alignItems: 'center' }}>
-          <Icon
-            calendar
-            css={{ with: '1.3rem', height: '1.3rem', fill: '#839496', marginRight: '.7rem' }}
-          />
-          <FormattedDate date={post.created_at} css={{ fontSize: '1.2rem', color: '#939fa0' }} />
-        </div>
-        <h1
-          css={{
-            fontFamily: theme.fonts.exo2,
-            fontWeight: 'bold',
-            lineHeight: 1.3,
-            letterSpacing: '.03em',
-            textTransform: 'uppercase',
-            fontSize: '2.5em',
-            margin: '.5rem 0 5rem',
-            color: '#ececec',
-          }}
-        >
-          {post.title}
-        </h1>
-        <Markdown>{post.body}</Markdown>
-      </div>
+
+  const posterJSX = (
+    <div css={{ borderBottom: '1px solid #515f56', '> *': { display: 'block !important' } }}>
+      <Image src={post.poster.url} alt={post.title} width={1280} height={720} />
     </div>
+  )
+
+  const metaJSX = (
+    <div
+      css={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        fontSize: '1rem',
+        marginTop: '1.4rem',
+      }}
+    >
+      <MetaDate date={post.created_at} />
+      <ul css={{ display: 'flex', '> li + li': { marginLeft: '1rem' } }}>
+        {post.tags.map((tag) => {
+          return (
+            <li key={tag}>
+              <MetaTag tag={tag} />
+            </li>
+          )
+        })}
+      </ul>
+    </div>
+  )
+
+  const titleJSX = (
+    <h1
+      css={{
+        font: `bold 4rem/1.3 ${theme.fonts.exo2}`,
+        textTransform: 'uppercase',
+        letterSpacing: '.03em',
+        color: '#ececec',
+        marginTop: '5rem',
+      }}
+    >
+      {post.title}
+    </h1>
+  )
+
+  const bodyJSX = <Markdown style={{ marginTop: '5rem' }}>{post.body}</Markdown>
+
+  return (
+    <article>
+      {posterJSX}
+      <div css={{ padding: '0 13rem 5rem', borderTop: '1rem solid #4f5758' }}>
+        {metaJSX}
+        {titleJSX}
+        {bodyJSX}
+      </div>
+    </article>
   )
 }
 
