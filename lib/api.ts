@@ -76,7 +76,7 @@ const getAboutPage = async (params: TGetAboutPageParams) => {
 // =====================================
 
 type TGetPostsParams = { locale?: string; where?: { [key: string]: any } }
-type TGetPostsResponse = { posts: TPostData }
+type TGetPostsResponse = { posts: TPostData[] }
 type TCategory = 'work' | 'experiment' | 'blog'
 type TPostData = {
   id: string

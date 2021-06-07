@@ -1,8 +1,8 @@
 import qs from 'qs'
 
-import { TPostData, TPostCategory } from './api'
+import { TPostData, TCategory } from './api'
 
-const categoryNamesMapping: { [category in TPostCategory]: string } = {
+const categoryNamesMapping: { [category in TCategory]: string } = {
   work: 'works',
   experiment: 'experiments',
   blog: 'blog',
@@ -14,7 +14,7 @@ const getPostLink = ({ category, slug }: TPostData) => {
   return `/${categoryNamesMapping[category]}/${slug}`
 }
 
-const getCategoryLink = (category: TPostCategory, query: any) => {
+const getCategoryLink = (category: TCategory, query: any) => {
   const url = `/${categoryNamesMapping[category]}`
   const queryString = qs.stringify(query, { arrayFormat: 'repeat' })
   return queryString ? `${url}?${queryString}` : url
